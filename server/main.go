@@ -52,9 +52,9 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	// tipo forEach no javascript
-	for index, item := range books {
+	for index, book := range books {
 		// se o item.ID for o mesmo do parametro {id} da url o livro será deletado
-		if item.ID == params["id"] {
+		if book.ID == params["id"] {
 			books = append(books[:index], books[index+1:]...)
 			break
 		}
@@ -117,7 +117,7 @@ func main() {
 
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"http://localhost:3000"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
 
 	fmt.Printf("Server running on port 8080\n")
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
