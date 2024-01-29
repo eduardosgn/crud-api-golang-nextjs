@@ -13,7 +13,7 @@ export default function Footer() {
               <GithubIcon />
             </TooltipTrigger>
             <TooltipContent>
-              <p>My github</p>
+              <p>Github repository</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
