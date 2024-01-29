@@ -106,11 +106,12 @@ export default function BooksComponent() {
         </div>
       </div>
 
-      <div className="flex justify-items-start gap-4 flex-col md:flex-row my-5">
+      <div className="flex flex-wrap justify-items-start gap-4 my-5">
         {books.map((book, index) => (
           <div
             key={index}
             className="text-center bg-indigo-600 text-white flex-1 p-3 rounded-md flex items-center flex-col justify-center"
+            style={{ minWidth: "200px" }}
           >
             <span className="font-bold ">{book.title}</span> <span className="text-xs">por</span>
             <span className="text-sm">
