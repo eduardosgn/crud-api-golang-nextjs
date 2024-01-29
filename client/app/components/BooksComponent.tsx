@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
+import DeleteButtonComponent from "./DeleteButtonComponent";
 
 type Writer = {
   firstname: string;
@@ -70,6 +71,27 @@ export default function BooksComponent() {
     }
   };
 
+  const handleDelete = async (bookId: string) => {
+    try {
+      // Substitua 'http://localhost:3000/api/books' pela URL da sua API
+      const response = await fetch(`http://localhost:8080/books/${bookId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error deleting book");
+      }
+
+      // Atualiza a lista de livros após a exclusão
+      setBooks(books.filter((book) => book.id.toString() !== bookId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row items-center justify-between">
@@ -84,7 +106,7 @@ export default function BooksComponent() {
         </div>
       </div>
 
-      <div className="flex justify-items-start gap-4 flex-wrap my-5">
+      <div className="flex justify-items-start gap-4 flex-col md:flex-row my-5">
         {books.map((book, index) => (
           <div
             key={index}
@@ -94,11 +116,23 @@ export default function BooksComponent() {
             <span className="text-sm">
               {book.writer?.firstname} {book.writer?.lastname}
             </span>
+            <div className="flex items-center justify-end w-full border-t-[1px] border-t-white pt-2 mt-2">
+              <DeleteButtonComponent
+                onDelete={() => handleDelete(book.id.toString())}
+                bookTitle={book.title}
+                authorName={book.writer?.firstname}
+                authorSurname={book.writer?.lastname}
+              />
+            </div>
           </div>
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex w-full justify-start gap-4 flex-wrap">
+      <h3 className="text-slate-700 font-bold text-xl mb-2">Adicionar livro</h3>
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full justify-start gap-4 flex-wrap mb-20 md:mb-6"
+      >
         <input
           type="text"
           value={title}
